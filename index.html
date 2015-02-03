@@ -35,14 +35,15 @@
             var number = 20;
             for (var z = -1 * number; z <= number; z++) {
                 
-                for (var x = -1 * number; x <= number; x++) {
+                for (var x = -1 * number; x <= number; x++) {                    
                     geometry = new THREE.BoxGeometry( 0.8, 0.8, 0.8 );
                     material = new THREE.MeshNormalMaterial();
-                    points[x] = new THREE.Mesh( geometry, material );
-                    points[x].position.x = x;
-                    points[x].position.z = z;
-                    points[x].position.y = Math.sin( ((x * x) + (z * z)) / 30 ) * 2;
-                    group.add( points[x] );
+                    var point = new THREE.Mesh( geometry, material );
+                    points.push(point);
+                    point.position.x = x;
+                    point.position.z = z;
+                    point.position.y = Math.sin( ((x * x) + (z * z)) / 30 ) * 2;
+                    group.add( point );
                 }
                 
             }
@@ -52,6 +53,16 @@
             var render = function() {
                 requestAnimationFrame( render );
                 controls.update();
+                
+                var d = new Date();
+                
+                for (var i in points) {
+                    var x = points[i].position.x;
+                    var z = points[i].position.z;
+                    points[i].position.y = Math.sin( ( d.getTime() / 50 + (x * x) + (z * z)) / 30 ) * 1;
+                }
+                
+                
                 renderer.render( scene, camera );
             };
             
