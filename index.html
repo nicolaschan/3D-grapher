@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+    <head>
+        <title>3D JavaScript Grapher</title>
+        <style>
+            html, body { margin: 0; padding: 0; overflow: hidden; }
+            #graph {
+                height: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id='content'>
+        <div id='graph'>
+        </div>
+        <div id='input'>
+        </div>
+        <script type='text/javascript' src='three.min.js'></script>
+        <script type='text/javascript' src='OrbitControls.js'></script>
+        <script type='text/javascript'>
+            var scene = new THREE.Scene();
+            var aspect = window.innerWidth / window.innerHeight;
+            var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 100 );
+            var renderer = new THREE.WebGLRenderer( { alpha: true });
+            
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.getElementById('graph').appendChild( renderer.domElement );
+            
+            var controls = new THREE.OrbitControls( camera );
+            
+            var group = new THREE.Group();
+            scene.add( group );
+            
+            var points = [];
+            var number = 10;
+            for (var z = -1 * number; z <= number; z++) {
+                
+                for (var x = -1 * number; x <= number; x++) {
+                    geometry = new THREE.SphereGeometry( 0.5, 32, 32 );
+                    material = new THREE.MeshNormalMaterial();
+                    points[x] = new THREE.Mesh( geometry, material );
+                    points[x].position.x = x;
+                    points[x].position.z = z;
+                    points[x].position.y = Math.sin(x / 2) * Math.cos(z / 2);
+                    group.add( points[x] );
+                }
+                
+            }
+            
+            camera.position.z = 20;
+            
+            var render = function() {
+                requestAnimationFrame( render );
+                controls.update();
+                
+                /*
+                var d = new Date();
+                
+                for (var i in points) {
+                    points[i].position.x = Math.sin(d.getTime() / (200 * i * i)) * 10 * i;
+                    points[i].position.z = Math.cos(d.getTime() / (200 * i * i)) * 10 * i;
+                }*/
+                
+                renderer.render( scene, camera );
+            };
+            
+            render();
+        </script>
+        </div>
+    </body>
+</html>
