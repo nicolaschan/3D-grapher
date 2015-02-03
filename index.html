@@ -20,7 +20,7 @@
         <script type='text/javascript'>
             var scene = new THREE.Scene();
             var aspect = window.innerWidth / window.innerHeight;
-            var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 100 );
+            var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 300 );
             var renderer = new THREE.WebGLRenderer( { alpha: true } );
             
             renderer.setSize( window.innerWidth, window.innerHeight );
@@ -36,8 +36,8 @@
             for (var z = -1 * number; z <= number; z++) {
                 
                 for (var x = -1 * number; x <= number; x++) {                    
-                    geometry = new THREE.BoxGeometry( 0.8, 0.8, 0.8 );
-                    material = new THREE.MeshNormalMaterial();
+                    geometry = new THREE.BoxGeometry( 1, 1, 1 );
+                    material = new THREE.MeshPhongMaterial( { color: 0x6666ff } );
                     var point = new THREE.Mesh( geometry, material );
                     points.push(point);
                     point.position.x = x;
@@ -48,7 +48,14 @@
                 
             }
             
-            camera.position.z = 20;
+            
+            var light = new THREE.PointLight( 0xffffff, 2, 200 );
+            light.position.set( 0, 5, 0 );
+            scene.add( light );
+            
+            camera.position.y = 30;
+            camera.position.z = 30;
+            
             
             var render = function() {
                 requestAnimationFrame( render );
